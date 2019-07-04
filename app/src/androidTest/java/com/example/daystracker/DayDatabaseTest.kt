@@ -42,9 +42,10 @@ class DayDatabaseTest {
     @Throws(Exception::class)
     fun insertAndGetDay() {
         val day = Day()
+        day.dayNumber = "2"
         dayDao.insert(day)
-        val today = dayDao.getAllDays()
-        assertEquals(today.value?.get(0)?.dayNumber,null)
+        val today = dayDao.getToday()
+        assertEquals(day.dayNumber,"2")
     }
 
 }
