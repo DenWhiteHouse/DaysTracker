@@ -9,11 +9,13 @@ import com.example.daystracker.database.Day
 import com.example.daystracker.database.DayDatabaseDao
 import kotlinx.coroutines.*
 
-class DayTrackerViewModel(val database: DayDatabaseDao,
-                          application: Application) : AndroidViewModel(application) {
+class DayTrackerViewModel(
+    val database: DayDatabaseDao,
+    application: Application
+) : AndroidViewModel(application) {
 
     private var viewModelJob = Job()
-    private var days = MutableLiveData<List<Day>>()
+    private lateinit var days: LiveData<List<Day>>
 
     override fun onCleared() {
         super.onCleared()
@@ -24,46 +26,46 @@ class DayTrackerViewModel(val database: DayDatabaseDao,
 
     private val _eventSaveButtonPressed = MutableLiveData<Boolean>()
     val eventSaveButtonPressed: LiveData<Boolean>
-        get()=_eventSaveButtonPressed
+        get() = _eventSaveButtonPressed
 
     init {
         _eventSaveButtonPressed.value = false
-        }
+    }
 
-    fun onEventSaveButtonPressed(){
+    fun onEventSaveButtonPressed() {
         _eventSaveButtonPressed.value = true
     }
 
-    fun saveButtonReset(){
+    fun saveButtonReset() {
         _eventSaveButtonPressed.value = false
     }
 
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
-    init{
+    init {
         initializeDays()
     }
 
-    private fun initializeDays(){
-        uiScope.launch{
+    private fun initializeDays() {
+        uiScope.launch {
             days = getDaysFromDatabase()
         }
     }
 
-    private suspend fun getDaysFromDatabase(): MutableLiveData<List<Day>>{
-        return withContext(Dispatchers.IO){
+    private suspend fun getDaysFromDatabase(): LiveData<List<Day>> {
+        return withContext(Dispatchers.IO) {
             var night = database.getAllDays()
             night
         }
     }
 
-    private suspend fun insert(day: Day){
-        withContext(Dispatchers.IO){
+    private suspend fun insert(day: Day) {
+        withContext(Dispatchers.IO) {
             database.insert(day)
         }
     }
 
-    fun createDayAndInsert(dayNum: String, description:String){
+    fun createDayAndInsert(dayNum: String, description: String) {
         uiScope.launch {
             _day.dayNumber = dayNum
             _day.activityOfDay = description

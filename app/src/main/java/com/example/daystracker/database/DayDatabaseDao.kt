@@ -23,7 +23,7 @@ interface DayDatabaseDao{
     fun clear()
 
     @Query("SELECT * FROM days_table ORDER BY dayId DESC")
-    fun getAllDays(): MutableLiveData<List<Day>>
+    fun getAllDays(): LiveData<List<Day>>
 
     @Query("SELECT * FROM days_table ORDER BY dayId DESC LIMIT 1")
     fun getToday(): Day?
