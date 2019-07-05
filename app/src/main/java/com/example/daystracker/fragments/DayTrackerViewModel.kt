@@ -16,7 +16,7 @@ class DayTrackerViewModel(
 
     private var viewModelJob = Job()
 
-    val days : LiveData<List<Day>> = database.getAllDays()
+    lateinit var days : LiveData<List<Day>>
 
     override fun onCleared() {
         super.onCleared()
@@ -42,6 +42,10 @@ class DayTrackerViewModel(
     }
 
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
+
+    init{
+        days = database.getAllDays()
+    }
 
     private suspend fun getDaysFromDatabase(): LiveData<List<Day>> {
         return withContext(Dispatchers.IO) {

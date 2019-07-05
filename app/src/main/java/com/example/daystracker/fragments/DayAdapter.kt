@@ -25,8 +25,8 @@ class DayAdapter(val clickListener: DayListener): ListAdapter<Day, DayAdapter.Vi
     class ViewHolder private constructor(val binding: DayItemBinding): RecyclerView.ViewHolder(binding.root){
 
         fun bind(item: Day, clickListener: DayListener) {
-            binding.day?.dayNumber = item?.dayNumber
-            binding.day?.activityOfDay = item?.activityOfDay
+            binding.dayTextView.setText(item.dayNumber)
+            binding.descriptionTextView2.setText(item.activityOfDay)
             binding.clickListener = clickListener
             binding.executePendingBindings()
         }
