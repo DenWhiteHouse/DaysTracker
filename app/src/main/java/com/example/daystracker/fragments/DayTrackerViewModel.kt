@@ -15,7 +15,8 @@ class DayTrackerViewModel(
 ) : AndroidViewModel(application) {
 
     private var viewModelJob = Job()
-    private lateinit var days: LiveData<List<Day>>
+
+    val days : LiveData<List<Day>> = database.getAllDays()
 
     override fun onCleared() {
         super.onCleared()
@@ -42,16 +43,6 @@ class DayTrackerViewModel(
 
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
-    init {
-        initializeDays()
-    }
-
-    private fun initializeDays() {
-        uiScope.launch {
-            days = getDaysFromDatabase()
-        }
-    }
-
     private suspend fun getDaysFromDatabase(): LiveData<List<Day>> {
         return withContext(Dispatchers.IO) {
             var night = database.getAllDays()
@@ -72,5 +63,9 @@ class DayTrackerViewModel(
             insert(_day)
             saveButtonReset()
         }
+    }
+
+    fun onDayClicked(){
+        //TODO Implement clicked logic
     }
 }

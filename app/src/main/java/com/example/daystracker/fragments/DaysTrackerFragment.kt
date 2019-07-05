@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.NavHostFragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.daystracker.R
 import com.example.daystracker.database.DayDatabase
 import com.example.daystracker.databinding.DaysTrackerFragmentBinding
@@ -35,6 +36,24 @@ class DaysTrackerFragment : Fragment() {
         val viewModel = ViewModelProviders.of(this, viewModelFactory).get(DayTrackerViewModel::class.java)
 
         binding.setLifecycleOwner(this)
+
+        binding.viewModel = viewModel
+
+        val manager = LinearLayoutManager(activity)
+        binding.dayList.layoutManager = manager
+
+        val adapter = DayAdapter(DayAdapter.DayListener { _ ->
+            viewModel.onDayClicked()
+        })
+
+        binding.dayList.adapter = adapter
+
+        viewModel.days.observe(viewLifecycleOwner, Observer {
+            it?.let{
+                adapter.submitList(it)
+            }
+        })
+
 
         binding.saveButton.setOnClickListener { _ ->
             viewModel.onEventSaveButtonPressed()
