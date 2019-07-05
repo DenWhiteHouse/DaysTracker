@@ -16,7 +16,7 @@ class DayTrackerViewModel(
 
     private var viewModelJob = Job()
 
-    lateinit var days : LiveData<List<Day>>
+    var days : LiveData<List<Day>>
 
     override fun onCleared() {
         super.onCleared()

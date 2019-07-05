@@ -50,4 +50,7 @@ dependencies {
     implementation "android.arch.navigation:navigation-fragment-ktx:$version_navigation"
     implementation "android.arch.navigation:navigation-ui-ktx:$version_navigation"
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0-alpha01'
+
+    //DataBinding
+    kapt "com.android.databinding:compiler:3.4.1"
 }

@@ -39,20 +39,18 @@ class DaysTrackerFragment : Fragment() {
 
         binding.viewModel = viewModel
 
-        val manager = LinearLayoutManager(activity)
-        binding.dayList.layoutManager = manager
-
         val adapter = DayAdapter(DayAdapter.DayListener { _ ->
             viewModel.onDayClicked()
         })
 
         binding.dayList.adapter = adapter
 
-        viewModel.days.observe(viewLifecycleOwner, Observer {
-            it?.let{
-                adapter.submitList(it)
-            }
-        })
+        // Implemented with BindingAdapter
+//        viewModel.days.observe(viewLifecycleOwner, Observer {
+//            it?.let{
+//                adapter.submitList(it)
+//            }
+//        })
 
 
         binding.saveButton.setOnClickListener { _ ->
