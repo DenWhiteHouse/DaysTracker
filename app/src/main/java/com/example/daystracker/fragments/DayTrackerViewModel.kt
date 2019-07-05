@@ -1,12 +1,15 @@
 package com.example.daystracker.fragments
 
 import android.app.Application
+import android.renderscript.ScriptGroup
+import android.view.View
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.daystracker.database.Day
 import com.example.daystracker.database.DayDatabaseDao
+import com.example.daystracker.databinding.DaysTrackerFragmentBinding
 import kotlinx.coroutines.*
 
 class DayTrackerViewModel(
@@ -16,22 +19,17 @@ class DayTrackerViewModel(
 
     private var viewModelJob = Job()
 
-    var days : LiveData<List<Day>>
+    lateinit var days : LiveData<List<Day>>
 
-    override fun onCleared() {
-        super.onCleared()
-        viewModelJob.cancel()
-    }
 
     private val _day = Day()
+
+    private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
     private val _eventSaveButtonPressed = MutableLiveData<Boolean>()
     val eventSaveButtonPressed: LiveData<Boolean>
         get() = _eventSaveButtonPressed
 
-    init {
-        _eventSaveButtonPressed.value = false
-    }
 
     fun onEventSaveButtonPressed() {
         _eventSaveButtonPressed.value = true
@@ -41,16 +39,16 @@ class DayTrackerViewModel(
         _eventSaveButtonPressed.value = false
     }
 
-    private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
     init{
+        _eventSaveButtonPressed.value = false
         days = database.getAllDays()
     }
 
     private suspend fun getDaysFromDatabase(): LiveData<List<Day>> {
         return withContext(Dispatchers.IO) {
-            var night = database.getAllDays()
-            night
+            var dayslist = database.getAllDays()
+            dayslist
         }
     }
 
@@ -60,10 +58,10 @@ class DayTrackerViewModel(
         }
     }
 
-    fun createDayAndInsert(dayNum: String, description: String) {
+    fun createDayAndInsert(dayNumber: String,activity:String) {
         uiScope.launch {
-            _day.dayNumber = dayNum
-            _day.activityOfDay = description
+            _day.dayNumber = dayNumber
+            _day.activityOfDay = activity
             insert(_day)
             saveButtonReset()
         }
@@ -71,5 +69,10 @@ class DayTrackerViewModel(
 
     fun onDayClicked(){
         //TODO Implement clicked logic
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        viewModelJob.cancel()
     }
 }

@@ -44,19 +44,7 @@ class DaysTrackerFragment : Fragment() {
         })
 
         binding.dayList.adapter = adapter
-
-        // Implemented with BindingAdapter
-//        viewModel.days.observe(viewLifecycleOwner, Observer {
-//            it?.let{
-//                adapter.submitList(it)
-//            }
-//        })
-
-
-        binding.saveButton.setOnClickListener { _ ->
-            viewModel.onEventSaveButtonPressed()
-        }
-
+        
         viewModel.eventSaveButtonPressed.observe(this, Observer { hasBeenPressed ->
             if (hasBeenPressed) {
                 viewModel.createDayAndInsert(binding.dayInput2.text.toString(), binding.activityInput.text.toString())
