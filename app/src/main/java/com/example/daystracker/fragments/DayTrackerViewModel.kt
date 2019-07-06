@@ -3,10 +3,7 @@ package com.example.daystracker.fragments
 import android.app.Application
 import android.renderscript.ScriptGroup
 import android.view.View
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import com.example.daystracker.database.Day
 import com.example.daystracker.database.DayDatabaseDao
 import com.example.daystracker.databinding.DaysTrackerFragmentBinding
@@ -18,13 +15,9 @@ class DayTrackerViewModel(
 ) : AndroidViewModel(application) {
 
     private var viewModelJob = Job()
-
-    lateinit var days : LiveData<List<Day>>
-
-
-    private val _day = Day()
-
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
+
+    var days = database.getAllDays()
 
     private val _eventSaveButtonPressed = MutableLiveData<Boolean>()
     val eventSaveButtonPressed: LiveData<Boolean>
@@ -42,15 +35,8 @@ class DayTrackerViewModel(
 
     init{
         _eventSaveButtonPressed.value = false
-        days = database.getAllDays()
     }
 
-    private suspend fun getDaysFromDatabase(): LiveData<List<Day>> {
-        return withContext(Dispatchers.IO) {
-            var dayslist = database.getAllDays()
-            dayslist
-        }
-    }
 
     private suspend fun insert(day: Day) {
         withContext(Dispatchers.IO) {
@@ -59,6 +45,7 @@ class DayTrackerViewModel(
     }
 
     fun createDayAndInsert(dayNumber: String,activity:String) {
+        val _day = Day()
         uiScope.launch {
             _day.dayNumber = dayNumber
             _day.activityOfDay = activity
