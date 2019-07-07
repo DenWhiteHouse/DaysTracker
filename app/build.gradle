@@ -53,4 +53,7 @@ dependencies {
 
     //DataBinding
     kapt "com.android.databinding:compiler:3.4.1"
+
+    //Decorations
+    implementation 'com.android.support:design:28'
 }

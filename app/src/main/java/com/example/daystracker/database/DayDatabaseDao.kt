@@ -19,8 +19,8 @@ interface DayDatabaseDao{
     @Query("SELECT * FROM days_table WHERE dayId = :key")
     fun get(key: Long): Day
 
-    @Query("DELETE FROM days_table")
-    fun clear()
+    @Query("DELETE FROM days_table WHERE dayId = :key")
+    fun deleteDayById(key: Long)
 
     @Query("SELECT * FROM days_table ORDER BY dayId DESC")
     fun getAllDays(): LiveData<List<Day>>

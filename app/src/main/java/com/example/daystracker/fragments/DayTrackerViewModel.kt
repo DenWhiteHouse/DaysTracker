@@ -54,6 +54,18 @@ class DayTrackerViewModel(
         }
     }
 
+    private suspend fun deleteDayById(id: Long) {
+        withContext(Dispatchers.IO) {
+            database.deleteDayById(id)
+        }
+    }
+
+    fun deleteDay(id : Long) {
+        uiScope.launch {
+            deleteDayById(id)
+        }
+    }
+
     fun onDayClicked(){
         //TODO Implement clicked logic
     }

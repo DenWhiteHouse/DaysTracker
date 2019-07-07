@@ -4,6 +4,7 @@ package com.example.daystracker.fragments
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.daystracker.database.Day
@@ -15,6 +16,10 @@ class DayAdapter(val clickListener: DayListener): ListAdapter<Day, DayAdapter.Vi
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
         holder.bind(item,clickListener)
+    }
+
+    public override fun getItem(position: Int): Day {
+        return super.getItem(position)
     }
 
 
