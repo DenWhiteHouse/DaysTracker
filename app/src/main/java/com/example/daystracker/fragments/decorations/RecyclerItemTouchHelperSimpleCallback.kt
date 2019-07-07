@@ -27,6 +27,6 @@ class RecyclerItemTouchHelperSimpleCallback(var viewModel: DayTrackerViewModel, 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
         var day =_adapter.getItem(viewHolder.adapterPosition)
         _viewModel.deleteDay(day.dayId)
-        _adapter.notifyDataSetChanged()
+        // no need to notify datasetchanged
     }
 }
